@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package example;
+
+import "asynq.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = ".;example";
+option java_multiple_files = true;
+option java_package = "example";
+
+service User {
+    rpc CreateUser(CreateUserPayload) returns (google.protobuf.Empty) {
+        option (asynq.task) = {
+            typename: "user:create"
+        };
+    };
+    rpc UpdateUser(UpdateUserPayload) returns (google.protobuf.Empty) {
+        option (asynq.task) = {
+            typename: "user:update"
+        };
+    };
+}
+
+message CreateUserPayload {
+    string name = 1;
+}
+
+message UpdateUserPayload {
+    string name = 1;
+}
