@@ -24,9 +24,8 @@ syntax = "proto3";
 
 package example;
 
-import "asynq.proto";
-
 // import copy asynq.proto
+import "asynq.proto";
 import "google/protobuf/empty.proto";
 
 option go_package = ".;example";
