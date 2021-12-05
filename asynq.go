@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	asynq "github.com/jmploop/protoc-gen-go-asynq/options"
+	asynq "github.com/jmploop/protoc-gen-go-asynq/proto"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/proto"
@@ -14,7 +14,7 @@ const (
 	contextPackage = protogen.GoImportPath("context")
 	asynqPackage   = protogen.GoImportPath("github.com/hibiken/asynq")
 	emptyPackage   = protogen.GoImportPath("google.golang.org/protobuf/types/known/emptypb")
-	protoPackage   = protogen.GoImportPath("github.com/golang/protobuf/proto")
+	protoPackage   = protogen.GoImportPath("google.golang.org/protobuf/proto")
 )
 
 var methodSets = make(map[string]int)
@@ -46,7 +46,7 @@ func generateFileContent(gen *protogen.Plugin, file *protogen.File, g *protogen.
 	g.P("var _ = new(", contextPackage.Ident("Context"), ")")
 	g.P("var _ = new(", asynqPackage.Ident("Task"), ")")
 	g.P("var _ = new(", emptyPackage.Ident("Empty"), ")")
-	g.P("var _ = new(", protoPackage.Ident("Buffer"), ")")
+	g.P("var _ = new(", protoPackage.Ident("Message"), ")")
 	g.P()
 
 	for _, service := range file.Services {
