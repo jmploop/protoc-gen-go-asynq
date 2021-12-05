@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+
+	asynq "github.com/jmploop/protoc-gen-go-asynq/options"
+
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/descriptorpb"
-	asynq "protoc-gen-go-asynq/options"
 )
 
 const (
