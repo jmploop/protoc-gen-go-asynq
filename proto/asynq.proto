@@ -9,7 +9,7 @@ option java_multiple_files = true;
 option java_package = "asynq";
 
 extend google.protobuf.MethodOptions {
-    Task task = 72295728;
+    Task task = 567890;
 }
 
 message Task {

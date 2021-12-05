@@ -7,6 +7,7 @@ proto:
 
 .PHONY: test
 test:
+	go install . && \
 	protoc --proto_path=. \
 		   --proto_path=./proto \
 		   --go_out=paths=source_relative:. \
