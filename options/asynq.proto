@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package asynq;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/jmploop/protoc-gen-go-asynq;asynq";
+option java_multiple_files = true;
+option java_package = "asynq";
+
+extend google.protobuf.MethodOptions {
+    Task task = 72295728;
+}
+
+message Task {
+    string typename = 1;
+}
