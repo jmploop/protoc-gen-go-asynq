@@ -38,7 +38,7 @@ type {{.ServiceType}}SvcJob struct {}
 var {{.ServiceType}}Job {{.ServiceType}}SvcJob
 
 {{range .MethodSets}}
-func (j *UserSvcJob) {{.Name}}(in *{{.Request}}, opts ...asynq.Option) (*asynq.Task, error) {
+func (j *{{$svrType}}SvcJob) {{.Name}}(in *{{.Request}}, opts ...asynq.Option) (*asynq.Task, error) {
 	payload, err := proto.Marshal(in)
 	if err != nil {
 		return nil, err

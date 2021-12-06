@@ -12,7 +12,7 @@ go get -d google.golang.org/protobuf/cmd/protoc-gen-go
 go get -d google.golang.org/grpc/cmd/protoc-gen-go-grpc
 
 # install protoc-gen-go-asynq
-go get -d github.com/jmploop/protoc-gen-go-asynq@v1.0.3
+go get -d github.com/jmploop/protoc-gen-go-asynq@v1.0.4
 ```
 
 ### 2. copy proto/asynq.proto to your project
