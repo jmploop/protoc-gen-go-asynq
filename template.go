@@ -17,12 +17,12 @@ type {{.ServiceType}}JobServer interface {
 
 func Register{{.ServiceType}}JobServer(mux *asynq.ServeMux, srv {{.ServiceType}}JobServer) {
 	{{- range .Methods}}
-	mux.HandleFunc("{{.Typename}}", _{{$svrType}}_{{.Name}}{{.Num}}_Job_Handler(srv))
+	mux.HandleFunc("{{.Typename}}", _{{$svrType}}_{{.Name}}_Job_Handler(srv))
 	{{- end}}
 }
 
 {{range .Methods}}
-func _{{$svrType}}_{{.Name}}{{.Num}}_Job_Handler(srv {{$svrType}}JobServer) func(context.Context, *asynq.Task) error {
+func _{{$svrType}}_{{.Name}}_Job_Handler(srv {{$svrType}}JobServer) func(context.Context, *asynq.Task) error {
 	return func(ctx context.Context, task *asynq.Task) error {
 		var in {{.Request}}
 		if err := proto.Unmarshal(task.Payload(), &in); err != nil {
@@ -31,6 +31,20 @@ func _{{$svrType}}_{{.Name}}{{.Num}}_Job_Handler(srv {{$svrType}}JobServer) func
 		err := srv.{{.Name}}(ctx, &in)
 		return err
 	}
+}
+{{end}}
+
+type {{.ServiceType}}SvcJob struct {}
+var {{.ServiceType}}Job {{.ServiceType}}SvcJob
+
+{{range .MethodSets}}
+func (j *UserSvcJob) {{.Name}}(in *{{.Request}}, opts ...asynq.Option) (*asynq.Task, error) {
+	payload, err := proto.Marshal(in)
+	if err != nil {
+		return nil, err
+	}
+	task := asynq.NewTask("{{.Typename}}", payload, opts...)
+	return task, nil
 }
 {{end}}
 
@@ -49,21 +63,12 @@ func New{{.ServiceType}}JobClient (client *asynq.Client) {{.ServiceType}}JobClie
 }
 
 {{range .MethodSets}}
-func {{.Name}}Job(in *{{.Request}}) (*asynq.Task, error) {
-	payload, err := proto.Marshal(in)
-	if err != nil {
-		return nil, err
-	}
-	job := asynq.NewTask("{{.Typename}}", payload)
-	return job, nil
-}
-
 func (c *{{$svrType}}JobClientImpl) {{.Name}}(ctx context.Context, in *{{.Request}}, opts ...asynq.Option) (*asynq.TaskInfo, error) {
-	job, err := {{.Name}}Job(in)
+	task, err := {{$svrType}}Job.{{.Name}}(in, opts...)
 	if err != nil {
 		return nil, err
 	}
-	info, err := c.cc.Enqueue(job, opts...)
+	info, err := c.cc.Enqueue(task)
 	if err != nil {
 		return nil, err
 	}

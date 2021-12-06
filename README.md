@@ -1,6 +1,6 @@
 # protoc-gen-go-asynq
 
-generate protobuf for asynq payload.
+generate protobuf for [asynq](https://github.com/hibiken/asynq) payload.
 
 ## usage
 
